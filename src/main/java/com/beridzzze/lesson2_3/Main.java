@@ -12,32 +12,42 @@ package com.beridzzze.lesson2_3;
 public class Main {
 
     public static void main(String[] args) {
-        String[][] arr = {{"1", "2", "3", "4"},
-                {"5", "6", "7", "8"},
-                {"9", "10", "11", "12"},
-                {"13", "14", "15", "16"}};
-        myMethod(arr);
+        Main main = new Main();
+        String[][] a = {
+                {"1", "1", "1", "1"},
+                {"2", "2", "2", "2"},
+                {"3", "3", "3", "3"},
+                {"4", "4", "4", "4"}};
+        try {
+            System.out.println(main.sumArray(a));
+        } catch (MyArraySizeException | MyArrayDataException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public static void myMethod(String arr[][]) {
-        int arrLength = arr.length * arr[0].length;
-        int[][] arr2 = new int[4][4];
+    public int sumArray(String a[][]) {
+        if (a.length != 4
+                || a[0].length != 4
+                || a[1].length != 4
+                || a[2].length != 4
+                || a[3].length != 4) {
+            throw new MyArraySizeException();
+        }
+
         int sum = 0;
-        if (arrLength < 16) {
-            throw new MyArraySizeException("Массив должен быть 4х4");
-        } else {
-            for (int i = 0; i < arr.length; i++) {
-                for (int j = 0; j < arr.length; j++) {
-                    try {
-                        arr2[i][j] = Integer.parseInt(arr[i][j]);
-                        sum+=arr2[i][j];
-                    } catch (Exception ex) {
-                        throw new MyArrayDataException("Error on " + i + " x " + j);
-                    }
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                try {
+                    sum += Integer.parseInt(a[i][j]);
+                } catch (NumberFormatException e) {
+                    throw new MyArrayDataException(i, j, e);
                 }
             }
-            System.out.println(sum);
         }
+
+        return sum;
+
     }
 
 }
